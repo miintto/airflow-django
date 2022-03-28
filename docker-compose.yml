@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 1GB
+    volumes:
+      - ./logs:/usr/src/airflow/logs
+      - ./logs:/usr/src/airflow/dags
+      - ./logs:/usr/src/airflow/plugins
+    ports:
+      - 8080:8080
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@${AIRFLOW_DB_HOST}:${AIRFLOW_DB_PORT}/${AIRFLOW_DB_NAME}
+    command: airflow webserver
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 1GB
+    volumes:
+      - ./logs:/usr/src/airflow/logs
+      - ./logs:/usr/src/airflow/dags
+      - ./logs:/usr/src/airflow/plugins
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@${AIRFLOW_DB_HOST}:${AIRFLOW_DB_PORT}/${AIRFLOW_DB_NAME}
+    command: airflow scheduler
