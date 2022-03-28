@@ -9,12 +9,15 @@ services:
         limits:
           memory: 1GB
     volumes:
+      - ./dags:/usr/src/airflow/dags
+      - ./plugins:/usr/src/airflow/plugins
       - ./logs:/usr/src/airflow/logs
-      - ./logs:/usr/src/airflow/dags
-      - ./logs:/usr/src/airflow/plugins
     ports:
       - 8080:8080
     environment:
+      AIRFLOW__CORE__DAGS_FOLDER: /usr/src/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /usr/src/airflow/plugins
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /usr/src/airflow/logs
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@${AIRFLOW_DB_HOST}:${AIRFLOW_DB_PORT}/${AIRFLOW_DB_NAME}
     command: airflow webserver
 
@@ -27,9 +30,12 @@ services:
         limits:
           memory: 1GB
     volumes:
+      - ./dags:/usr/src/airflow/dags
+      - ./plugins:/usr/src/airflow/plugins
       - ./logs:/usr/src/airflow/logs
-      - ./logs:/usr/src/airflow/dags
-      - ./logs:/usr/src/airflow/plugins
     environment:
+      AIRFLOW__CORE__DAGS_FOLDER: /usr/src/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /usr/src/airflow/plugins
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /usr/src/airflow/logs
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@${AIRFLOW_DB_HOST}:${AIRFLOW_DB_PORT}/${AIRFLOW_DB_NAME}
     command: airflow scheduler
