@@ -7,6 +7,7 @@ authors = ["miintto <miintto.log@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 apache-airflow = "^2.2.4"
+apache-airflow-providers-docker = "^2.5.2"
 psycopg2 = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
