@@ -11,20 +11,23 @@ Django 내부에 비즈니스 로직이 강하게 엮여있어서 별도로 분�
 
 ## Environments
 - **Language:**
-  - Python 3.9
+  - Python 3.10
 - **Framework:**
   - Airflow 2.2.4
+  - Celery 5.1.2
   - Django 4.0
-- **Docker:** 20.10.10
+- **Container:**
+  - Docker 20.10.10
 - **Database:**
   - PostrgreSQL 12.7
 
 
 # 1. Architecture
 
-<img src="https://user-images.githubusercontent.com/37063580/161376043-a383b83b-4ab1-4670-a847-38c48c8f6312.png" width="600">
+<img src="https://user-images.githubusercontent.com/37063580/161416452-98e31419-a244-4f0f-94a1-bce942ffa68e.png" width="600">
 
 Airflow는 docker compose를 이용하여 구성하였고, `DockerOperator`를 이용하여 Django 컨테이너를 실행하도록 하였습니다.
+`CeleryExecutor`를 사용하여 작업을 분산된 환경에서 실행 가능하도록 하였습니다.
 
 # 2. Quick Start
 
@@ -70,6 +73,7 @@ $> docker-compose up -d
 초기 실행하는 경우 DB에 유저 정보를 입력합니다.
 
 ```bash
+$> airflow db init
 $> airflow users create \
     --username miintto \
     --firstname Minjae \
